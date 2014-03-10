@@ -10,8 +10,7 @@ CIFAR-10 分类模型(基于 caffe )
 
 * 训练过程如下:
 
-   <img src='./img/accuracy.svg' >
+   <img src='https://github.com/dailiang/cifar-10/tree/master/img/CIFAR-10.png' />
 
-   <img src='./img/loss-model1.svg' >
-
+   <img src='https://github.com/dailiang/cifar-10/tree/master/img/CIFAR-10-loss.png' />
 

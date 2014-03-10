@@ -1,0 +1,262 @@
+name: "cifar-test"
+layers {
+    layer {
+        name: "cifar"
+        type: "data"
+        source: "cifar-test-leveldb"
+        batchsize: 128
+        scale: 0.00390625
+    }
+    top: "data"
+    top: "label"
+}
+
+
+######################
+### THE FIRST CONV ###
+######################
+
+layers {
+    layer {
+        name: "conv1"
+        type: "conv"
+        num_output: 64
+        kernelsize: 5
+        stride: 1
+        weight_filler {
+            type: "xavier"
+        }
+        bias_filler {
+            type: "constant"
+        }
+        blobs_lr: 1.
+        blobs_lr: 2.
+    }
+    bottom: "data"
+    top: "conv1"
+}
+
+layers {
+    layer {
+        name: "relu1"
+        type: "relu"
+    }
+    bottom: "conv1"
+    top: "conv1"
+}
+
+layers {
+    layer {
+        name: "pool1"
+        type: "pool"
+        kernelsize: 3
+        stride: 2
+        pool: MAX
+    }
+    bottom: "conv1"
+    top: "pool1"
+}
+
+layers {
+    layer {
+        name: "norm1"
+        type: "lrn"
+        local_size: 5
+        alpha: 0.001
+        beta: 0.75
+    }
+    bottom: "pool1"
+    top: "norm1"
+}
+
+########################
+### THE SECONDE CONV ###
+########################
+
+layers {
+    layer {
+        name: "conv2"
+        type: "conv"
+        num_output: 64
+        kernelsize: 5
+        stride: 1
+        weight_filler {
+            type: "xavier"
+        }
+        bias_filler {
+            type: "constant"
+        }
+        blobs_lr: 1.
+        blobs_lr: 2.
+    }
+    bottom: "norm1"
+    top: "conv2"
+}
+
+layers {
+    layer {
+        name: "relu2"
+        type: "relu"
+    }
+    bottom: "conv2"
+    top: "conv2"
+}
+
+layers {
+    layer {
+        name: "norm2"
+        type: "lrn"
+        local_size: 5
+        alpha: 0.001
+        beta: 0.75
+    }
+    bottom: "conv2"
+    top: "norm2"
+}
+
+######################
+### THE THIRD CONV ###
+######################
+
+layers {
+    layer {
+        name: "conv3"
+        type: "conv"
+        num_output: 128
+        kernelsize: 5
+        stride: 1
+        weight_filler {
+            type: "xavier"
+        }
+        bias_filler {
+            type: "constant"
+        }
+        blobs_lr: 1.
+        blobs_lr: 2.
+    }
+    bottom: "norm2"
+    top: "conv3"
+}
+
+layers {
+    layer {
+        name: "relu3"
+        type: "relu"
+    }
+    bottom: "conv3"
+    top: "conv3"
+}
+
+layers {
+    layer {
+        name: "norm3"
+        type: "lrn"
+        local_size: 9
+        alpha: 0.001
+        beta: 0.75
+    }
+    bottom: "conv3"
+    top: "norm3"
+}
+
+#######################
+### FULLY-CONNECT 1 ###
+#######################
+
+layers {
+    layer {
+        name: "fc4"
+        type: "innerproduct"
+        num_output: 1024
+        weight_filler {
+            type: "xavier"
+        }
+        bias_filler {
+            type: "constant"
+        }
+        blobs_lr: 1.
+        blobs_lr: 2.
+    }
+    bottom: "norm3"
+    top: "fc4"
+}
+
+layers {
+    layer {
+        name: "relu4"
+        type: "relu"
+    }
+    bottom: "fc4"
+    top: "fc4"
+}
+
+#######################
+### FULLY-CONNECT 2 ###
+#######################
+
+layers {
+    layer {
+        name: "fc5"
+        type: "innerproduct"
+        num_output: 512
+        weight_filler {
+            type: "xavier"
+        }
+        bias_filler {
+            type: "constant"
+        }
+        blobs_lr: 1.
+        blobs_lr: 2.
+    }
+    bottom: "fc4"
+    top: "fc5"
+}
+
+layers {
+    layer {
+        name: "relu5"
+        type: "relu"
+    }
+    bottom: "fc5"
+    top: "fc5"
+}
+
+
+#######################
+### FULLY-CONNCET-3 ###
+#######################
+
+layers {
+    layer {
+        name: "fc6"
+        type: "innerproduct"
+        num_output: 10
+        weight_filler {
+            type: "xavier"
+        }
+        bias_filler {
+            type: "constant" 
+        }
+    }
+    bottom: "fc5"
+    top: "fc6"
+}
+
+layers {
+   layer {
+        name: "prob"
+        type: "softmax"
+    }
+    bottom: "fc6"
+    top: "prob"
+}
+
+layers {
+    layer {
+        name: "accuracy"
+        type: "accuracy"
+    }
+    bottom: "prob"
+    bottom: "label"
+    top: "accuracy"
+}

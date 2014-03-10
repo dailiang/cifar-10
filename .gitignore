@@ -1,0 +1,7 @@
+*.solverstate
+*000
+*.log
+
+
+/cifar-test-leveldb/
+/cifar-train-leveldb/

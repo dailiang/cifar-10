@@ -10,6 +10,6 @@ CIFAR-10 分类模型(基于 caffe ), 在测试集上准确率可达 80%
 
 * 训练过程中的 error 和 acccuracy 曲线如下(**如果图像无法显示,请 -耐心- 查看 [img 文件](https://github.com/dailiang/cifar-10/tree/master/img)**): 
 
-   <img src='https://github.com/dailiang/cifar-10/tree/master/img/cifar-10.png' />
+   ![acccuracy.png](./cifar-10.png)
 
-   <img src='https://github.com/dailiang/cifar-10/tree/master/img/cifar-10%20-loss.png' />
+   ![error.png](./cifar-10%20-loss.png)
